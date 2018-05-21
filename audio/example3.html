@@ -21,10 +21,31 @@
 <audio id="bear3" src="sound/bgm/bearintheforest.mp3"></audio>
 
 <script>
+let targets=[
+	"#bear1",
+	"#bear2",
+	"#bear3"
+]
+class Bear{
+	constructor(targetNum){
+		this.num=targetNum;
+		this.isPlay=false;
+		this.targetBGM=document.querySelector(targets[targetNum]);
+		this.targetTime=document.querySelector(targets[targetNum]+"time");
+	}
+
+	drawTime(){
+		this.targetTime.setAttribute("value",this.targetBGM.currentTime);
+	}
+}
+let be1=new Bear(1);
 window.onload = () => {
 	//------------------------------------
 	//輪唱処理
 	//------------------------------------
+
+	let isPlay2=false;
+	let isPlay3=false;
 	let aroundSing = () => {
 		let bear1   = document.querySelector("#bear1");
 		bear1.play();
@@ -33,9 +54,29 @@ window.onload = () => {
 		bear1.addEventListener("timeupdate", () => {
 			let cur1 = bear1.currentTime;			//現在の再生時間を取得
 			txtbox1.setAttribute("value", cur1);	//テキストボックスの内容を変更
+
+			if(cur1>=3.0&&isPlay2==false){
+				let bear2   = document.querySelector("#bear2");
+				bear2.play();
+				let txtbox2 = document.querySelector("#bear2time");
+				bear2.addEventListener("timeupdate", () => {
+					let cur2 = bear2.currentTime;			//現在の再生時間を取得
+					txtbox2.setAttribute("value", cur2);	//テキストボックスの内容を変更
+				});
+				isPlay2=true;
+			}
+			if(cur1>=6.0&&isPlay3==false){
+				let bear3   = document.querySelector("#bear3");
+				bear3.play();
+				let txtbox3 = document.querySelector("#bear3time");
+				bear3.addEventListener("timeupdate", () => {
+					let cur3 = bear3.currentTime;			//現在の再生時間を取得
+					txtbox3.setAttribute("value", cur3);	//テキストボックスの内容を変更
+				});
+				isPlay3=true;
+			}
 		});
 	};
-
 	//------------------------------------
 	//輪唱スタート
 	//------------------------------------
